@@ -37,9 +37,9 @@ app.get('/hello/:ID', (request, response) => {
     response.send(" {status:200, message: hello "+ ID+ "}");
 });
 
-app.get('/search', (req, res) => {
+app.get('/search', (request, response) => {
 
-    const searchQuery = req.query.s;
+    const searchQuery = request.query.s;
   
     if(searchQuery)
     {
@@ -66,3 +66,13 @@ app.get("/movies/update", (request, response) => {
 app.get("movies/delete", (request, response) => {
     response.send(" {status:200, message:'ok'}");
 });
+
+app.get('/movies/get/by-date', function(request, response){
+    response.send(`status:${response.statusCode}, message: ${movies.sort((a, b)=>{return a.year - b.year}).map(e=>{return ` title: ${e.title}, year: ${e.year},rating: ${e.rating} ||`})}`);
+ });
+ app.get('/movies/get/by-rating', function(request, response){
+    response.send(`status:${response.statusCode}, message: ${movies.sort((a, b)=>{return b.rating - a.rating}).map(e=>{return ` title: ${e.title}, year: ${e.year},rating: ${e.rating} ||`})}`);
+ });
+ app.get('/movies/get/by-title', function(request, response){
+    response.send(`status:${reponse.statusCode}, message: ${movies.sort((a, b)=>{  if (a.title.toLowerCase() < b.title.toLowerCase()) return -1;if (a.title.toLowerCase() > b.title.toLowerCase()) return 1; return 0;}).map(e=>{return ` title: ${e.title}, year: ${e.year},rating: ${e.rating} ||`})}`);
+ });
