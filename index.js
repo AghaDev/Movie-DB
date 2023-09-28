@@ -112,13 +112,40 @@ app.get('/movies/get/by-date', function(request, response){
   let length=movies.length-1;
   console.log();
 
-  
+
   app.delete('/movies/delete/:id', (request, response) => {
     const movieId = parseInt(request.params.id);
     const i = movies.findIndex((movie) => movie.id === movieId);
   
     if (i!== -1) {
       movies.splice(i, 1);
+      res.status(200).json({ status: 200, data: movies });
+    } else {
+      res.status(404).json({
+        status: 404,
+        error: true,
+        message: `The movie with ID ${movieId} does not exist`,
+      });
+    }
+  });
+
+  app.put('/movies/update/:id', (req, res) => {
+    const movieId = parseInt(req.params.id);
+    const { title: newTitle, rating: newRating } = req.query;
+  
+    const movieIndex = movies.findIndex((movie) => movie.id === movieId);
+  
+    if (movieIndex !== -1) {
+      const movie = movies[movieIndex];
+  
+      if (newTitle) {
+        movie.title = newTitle;
+      }
+  
+      if (newRating) {
+        movie.rating = parseFloat(newRating);
+      }
+  
       res.status(200).json({ status: 200, data: movies });
     } else {
       res.status(404).json({
