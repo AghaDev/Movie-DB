@@ -86,3 +86,28 @@ app.get('/movies/get/by-date', function(request, response){
        response.send(movie);
      }
  });
+
+ app.get('/movies/add', (request, response) => {
+    const title = request.query.title;
+    const year = request.query.year;
+    let rating = request.query.rating;
+  
+    if (!title || !year || year.length !== 4 || isNaN(year)) {
+      response.status(403).json({
+        status: 403,
+        error: true,
+        message: 'Please write a title and a year.',
+      });
+    } else {
+      if (!rating || isNaN(rating)) {
+        rating = 4;
+      }
+  
+      const newMovie = { title, year: parseInt(year), rating: parseFloat(rating) };
+      movies.push(newMovie);
+  
+      response.status(200).json({ status: 200, data: movies });
+    }
+  });
+  let length=movies.length-1;
+  console.log();
