@@ -96,7 +96,7 @@ app.get('/movies/get/by-date', function(request, response){
       response.status(403).json({
         status: 403,
         error: true,
-        message: 'Please write a title and a year.',
+        message: 'you cannot create a movie without providing a title and a year',
       });
     } else {
       if (!rating || isNaN(rating)) {
